@@ -18,6 +18,9 @@ class Cell:
             self.board[(self.x, self.y)] = LiveCell(self.board, self.x, self.y)
         else:
             del self.board[(self.x, self.y)]
+            
+    def __repr__(self):
+        return "({}, {})".format(self.x, self.y)
 
 class LiveCell(Cell):
     def __init__(self, board, x, y):
@@ -58,9 +61,10 @@ class Board:
         return [cell for cell in self.cell_dict.values() if cell.is_live()]
         
 if __name__ == '__main__':
+    # create a glider
     board = Board(((1, 0), (1, 1), (1, 2)))
-    print [(cell.x, cell.y) for cell in board.get_live_cells()]
+    print board.get_live_cells()
     board.cycle()
-    print [(cell.x, cell.y) for cell in board.get_live_cells()]
+    print board.get_live_cells()
     board.cycle()
-    print [(cell.x, cell.y) for cell in board.get_live_cells()]
+    print board.get_live_cells()

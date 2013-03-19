@@ -16,18 +16,21 @@ class Cell:
         return [(self.x + u, self.y + v) for (u, v) in Cell.dirs]
     
     def live_neighbours(self):
-        return [self.board[coord] for coord in self.get_neigbour_coords()
-                if coord in self.board and self.board[coord].state]
+        return len([self.board[coord] for coord in self.get_neigbour_coords()
+                    if coord in self.board and self.board[coord].state])
     
     def update_next_state(self):
-        live = len(self.live_neighbours())
+        live = self.live_neighbours()
         self.next_state = live == 3 or (live == 2 and self.state)
               
     def cycle(self):
         if self.next_state:
             self.board[(self.x, self.y)] = Cell(self.board, self.x, self.y, True)
         else:
-            del self.board[(self.x, self.y)]    
+            del self.board[(self.x, self.y)]
+
+    def __repr__(self):
+        return "({}, {})".format(self.x, self.y)
     
 class Board:
     def __init__(self, cell_coords):
@@ -45,9 +48,10 @@ class Board:
         return [cell for cell in self.cell_dict.values() if cell.state]
         
 if __name__ == '__main__':
+    # create a glider
     board = Board(((1, 0), (1, 1), (1, 2)))
-    print [(cell.x, cell.y) for cell in board.get_live_cells()]
+    print board.get_live_cells()
     board.cycle()
-    print [(cell.x, cell.y) for cell in board.get_live_cells()]
+    print board.get_live_cells()
     board.cycle()
-    print [(cell.x, cell.y) for cell in board.get_live_cells()]
+    print board.get_live_cells()
