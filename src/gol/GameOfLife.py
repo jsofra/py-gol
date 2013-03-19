@@ -7,6 +7,8 @@ class Cell:
         self.state = state
         self.next_state = None
         
+        # if it is a new live cell create dead cells around it so that
+        # they can potentially become live cells in the next generation
         if self.state:
             for (nx, ny) in self.get_neigbour_coords():
                 if (nx, ny) not in self.board:
@@ -25,8 +27,13 @@ class Cell:
               
     def cycle(self):
         if self.next_state:
+            # create new live cells so that the buffer of dead cells will also be created
             self.board[(self.x, self.y)] = Cell(self.board, self.x, self.y, True)
+        elif self.state:
+            # life cells die in next generation but are not deleted
+            self.board[(self.x, self.y)] = Cell(self.board, self.x, self.y, False)
         else:
+            # delete dead cells
             del self.board[(self.x, self.y)]
 
     def __repr__(self):

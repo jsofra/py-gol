@@ -15,8 +15,13 @@ class Cell:
 
     def cycle(self):
         if self.next_state:
+            # create new live cells so that the buffer of dead cells will also be created
             self.board[(self.x, self.y)] = LiveCell(self.board, self.x, self.y)
+        elif self.is_live():
+            # life cells die in next generation but are not deleted
+            self.board[(self.x, self.y)] = DeadCell(self.board, self.x, self.y)
         else:
+            # delete dead cells
             del self.board[(self.x, self.y)]
             
     def __repr__(self):
@@ -25,6 +30,8 @@ class Cell:
 class LiveCell(Cell):
     def __init__(self, board, x, y):
         Cell.__init__(self, board, x, y)
+        # if it is a new live cell create dead cells around it so that
+        # they can potentially become live cells in the next generation
         for (nx, ny) in self.get_neigbour_coords():
             if (nx, ny) not in self.board:
                 board[(nx, ny)] = DeadCell(self.board, nx, ny) 
