@@ -15,11 +15,9 @@ class Cell:
     def get_neigbour_coords(self):
         return [(self.x + u, self.y + v) for (u, v) in Cell.dirs]
     
-    def get_neighbours(self):
-        return [self.board[coord] for coord in self.get_neigbour_coords() if coord in self.board]
-    
     def live_neighbours(self):
-        return [neighbour for neighbour in self.get_neighbours() if neighbour.state]
+        return [self.board[coord] for coord in self.get_neigbour_coords()
+                if coord in self.board and self.board[coord].state]
     
     def update_next_state(self):
         live = len(self.live_neighbours())
@@ -29,7 +27,7 @@ class Cell:
         if self.next_state:
             self.board[(self.x, self.y)] = Cell(self.board, self.x, self.y, True)
         else:
-            del self.board[(self.x, self.y)]
+            del self.board[(self.x, self.y)]    
     
 class Board:
     def __init__(self, cell_coords):
