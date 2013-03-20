@@ -1,6 +1,4 @@
-class Cell:
-    dirs = ((0, 1), (1, 1), (1, 0), (1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1))
-    
+class Cell:    
     def __init__(self, board, x, y, state):
         self.board = board
         self.x, self.y = (x, y)
@@ -15,7 +13,7 @@ class Cell:
                     board[(nx, ny)] = Cell(self.board, nx, ny, False)
     
     def get_neigbour_coords(self):
-        return [(self.x + u, self.y + v) for (u, v) in Cell.dirs]
+        return [(self.x + u, self.y + v) for u in (-1, 0, 1) for v in (-1, 0, 1) if (u, v) != (0, 0)]
     
     def live_neighbours(self):
         return len([self.board[coord] for coord in self.get_neigbour_coords()
